@@ -1,6 +1,6 @@
 Package: combinatorix
 Type: Package
-Title: Combinatorial bacterial communities to modulate plant phenotypes
+Title: Combinatoric bacterial communities to modulate plant phenotypes
 Version: 0.0-1
 Author: Sur Herrera Paredes
 imports: gpplot2,
