@@ -1,0 +1,18 @@
+Package: combinatorix
+Type: Package
+Title: Combinatorial bacterial communities to modulate plant phenotypes
+Version: 0.0-1
+Author: Sur Herrera Paredes
+imports: gpplot2,
+  reshape2
+suggests: combinatorixData,
+  RosetteDetector,
+  lme4,
+  lmerTest
+Maintainer: Sur Herrera Paredes <surh@stanford.edu>
+Description: Analysis for randomized bacterial synthetic communities
+	and their effect on plant phenotypes.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1

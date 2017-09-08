@@ -1,3 +1,4 @@
+library(combinatorixData)
 library(ggplot2)
 library(reshape2)
 library(lme4)
@@ -15,7 +16,9 @@ library(lmerTest)
 #' @param contam logical indicating whether to keep wells marked as contaminated
 #' @param prefix string indicating prefix for created files
 #' 
-#' @author Sur
+#' @author Sur Herrera Paredes
+#' 
+#' @export
 analyze_measurement <- function(variable, dat, trans = "log2",
                                 clean = TRUE, contam = FALSE,
                                 prefix = ""){
@@ -41,8 +44,6 @@ analyze_measurement <- function(variable, dat, trans = "log2",
     stop("ERROR")
   }
     
-    
-  
   ## Check consistency between reps
   dat2 <- subset(dat,PlateID %in% unique(dat$PlateID[ dat$PicRep == "B" ]))
   f1 <- paste("PlateID + Row + Col ~ PicRep",sep = "")
