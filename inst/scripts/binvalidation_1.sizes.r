@@ -73,10 +73,11 @@ analyze_measurement <- function(variable, dat, trans = "log2",
     geom_point(aes(color = Bacteria),position = position_jitterdodge()) +
     theme(panel.background = element_blank(),
           panel.grid = element_blank(),
-          panel.border = element_rect(color = "black", fill = NA))
+          panel.border = element_rect(color = "black", fill = NA),
+          axis.text.x = element_text(color = "black", angle = 90))
   #p1
   filename <- paste(prefix,"per_strain.svg", sep = "")
-  ggsave(filename,p1,width = 7, height = 5)
+  ggsave(filename,p1,width = 10, height = 5)
   
   # Models
   f1 <- paste(variable," ~ Treatment + PlateID", sep = "")
@@ -120,50 +121,20 @@ analyze_measurement <- function(variable, dat, trans = "log2",
 }
 ##################################################################
 
-# Read and process contaminated
-Contam <- read.table("contaminated_wells.txt", sep = "\t")
-Contam
-Contam <- apply(Contam, 1, function(x){
-  x <- as.character(x)
-  
-  x[2] <- sub(pattern = "[(]",replacement = "",x = x[2])
-  x[2] <- sub(pattern = "[)]",replacement = "",x = x[2])
-  
-  wells <- strsplit(x = x[2],split = ",")
-  wells <- do.call(c, wells)
-  
-  wells <- sub(pattern = "^ +",replacement = "",x = wells)
-  wells <- sub(pattern = " +$",replacement = "",x = wells)
-  dat <-  data.frame(Plate = x[1], Well = wells)
-  
-  #wells <- paste(x[1], wells, sep = ".")
-  
-  return(dat)
-})
-Contam <- do.call(rbind,Contam)
-Contam
-
-# Read and process sizes from imaging
-Sizes <- read.table("sizes.txt", sep = "\t", header = TRUE)
-head(Sizes)
-Sizes$PicRep <- "A"
-Sizes$PicRep[ grep(pattern = "B$",x = as.character(Sizes$PlateID)) ] <- "B"
-levels(Sizes$Col) <- c("1","2","3","4")
-levels(Sizes$Row) <- c("A","B","C")
-Sizes$PlateID <- sub(pattern = "B$",replacement = "", x = as.character(Sizes$PlateID))
-Sizes$Contaminated <- paste(Sizes$PlateID,Sizes$Row, Sizes$Col, sep = "") %in% paste(Contam$Plate,Contam$Well, sep = "")
-Sizes$Bacteria <- "+Bacteria"
-Sizes$Bacteria[Sizes$Col == "4"] <- "No Bacteria"
-head(Sizes)
+setwd("~/rhizogenomics/experiments/2017/today/")
 
 ################ ANALYZE ################
 # Size in pixels
+data(binvalidation.sizes)
+Sizes <- binvalidation.sizes
+binvalidation.sizes <- NULL
+
 res <- analyze_measurement(variable = "npixels",
                            dat = Sizes,
                            trans = "log2plus1",
                            clean = TRUE,
                            contam = FALSE,
-                           prefix = "npixels_log_noconam_nodead_")
+                           prefix = "npixels_log_nocontam_nodead_")
 AIC(res$m1,res$m2)
 BIC(res$m1,res$m2)
 
@@ -173,7 +144,7 @@ res <- analyze_measurement(variable = "Normalized.size",
                            trans = "log2plus1",
                            clean = TRUE,
                            contam = FALSE,
-                           prefix = "normalized.size_log_noconam_nodead_")
+                           prefix = "normalized.size_log_nocontam_nodead_")
 AIC(res$m1,res$m2)
 BIC(res$m1,res$m2)
 
@@ -183,7 +154,7 @@ res <- analyze_measurement(variable = "Hull.area",
                            trans = "log2plus1",
                            clean = TRUE,
                            contam = FALSE,
-                           prefix = "hull.area_log_noconam_nodead_")
+                           prefix = "hull.area_log_nocontam_nodead_")
 AIC(res$m1,res$m2)
 BIC(res$m1,res$m2)
 
@@ -193,7 +164,7 @@ res <- analyze_measurement(variable = "Normalized.hull.area",
                            trans = "log2plus1",
                            clean = TRUE,
                            contam = FALSE,
-                           prefix = "normalized.hull.area_log_noconam_nodead_")
+                           prefix = "normalized.hull.area_log_nocontam_nodead_")
 AIC(res$m1,res$m2)
 BIC(res$m1,res$m2)
 
