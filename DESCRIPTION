@@ -3,7 +3,7 @@ Type: Package
 Title: Combinatoric bacterial communities to modulate plant phenotypes
 Version: 0.0-1
 Author: Sur Herrera Paredes
-imports: gpplot2,
+imports: ggplot2,
   reshape2
 suggests: combinatorixData,
   RosetteDetector,
